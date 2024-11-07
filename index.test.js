@@ -48,17 +48,31 @@ describe('Band, Musician, and Song Models', () => {
         const updatedMusician = await musician.update({ instrument: 'Guitar' });
         expect(musician.instrument).toBe('Guitar');
     })
+    test('can update a Song', async () => {
+        const song = await Song.create({ title: 'Rapstar', length: 3, year: 2021 });
+        const updatedSong = await song.update({ length: 4 });
+        expect(song.length).toBe(4);
+    })
 
     test('can delete a Band', async () => {
         const band = await Band.create({ name: 'Jonas Brothers', genre: 'Rock' });
         console.log(Band.length);
         await band.destroy();
-        
-        expect(Band.length).toBe(0);
+        const foundBand = await Band.findByPk(band.id);
+        expect(foundBand).toBeNull();
     })
 
     test('can delete a Musician', async () => {
         // TODO - test deleting a musician
-        expect('NO TEST').toBe('EXPECTED VALUE HERE');
+        const musician = await Musician.create({ name: 'Polo G', instrument: 'Piano' });
+        await musician.destroy();
+        const foundMusician = await Musician.findByPk(musician.id);
+        expect(foundMusician).toBeNull();
+    })
+    test('can delete a Song', async () => {
+        const song = await Song.create({ title: 'Rapstar', length: 3, year: 2021 });
+        await song.destroy();
+        const foundSong = await Song.findByPk(song.id);
+        expect(foundSong).toBeNull();
     })
 })
